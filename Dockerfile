@@ -8,4 +8,9 @@ RUN dotnet publish "LabBackend/LabBackend.csproj" -c Release -o /app/publish /p:
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine
 WORKDIR /app
 COPY --from=build /app/publish .
+ARG MONGO_USER
+ARG MONGO_PASSWORD
+ENV MONGO_USER=${MONGO_USER}
+ENV MONGO_PASSWORD=${MONGO_PASSWORD}
+
 ENTRYPOINT ["dotnet", "LabBackend.dll"]

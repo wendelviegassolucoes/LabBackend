@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
 using System.Security.Authentication;
 
 namespace WebApiConsole.AppStart

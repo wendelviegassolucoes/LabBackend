@@ -11,7 +11,7 @@ def generate_cnpj():
         for i, v in enumerate(l):                                               
             digit += v * (i % 8 + 2)                                            
                                                                                 
-        digit = 11 - digit % 11                                                 
+        digit = 11 - digit % 11                 
                                                                                 
         return digit if digit < 10 else 0                                       
                                                                                 
