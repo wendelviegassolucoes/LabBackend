@@ -3,14 +3,18 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.DataProtection;
-using Mongo.Repository;
+using Cache;
 
 namespace WebApiConsole.AppStart
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
+
+        static Startup()
+        {
+            Redis.TakeInstance();
+        }
 
         public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {

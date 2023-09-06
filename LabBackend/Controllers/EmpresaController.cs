@@ -1,10 +1,6 @@
 using CoreLabBackend.Services;
 using DomainLabBackend.Domain;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using static DomainLabBackend.Mapper.Mappping;
 
 namespace LabBackend.Controllers
 {
@@ -20,29 +16,23 @@ namespace LabBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetCountEnterprises()
+        public async Task<IActionResult> GetCountEnterprises()
         {
-            List<EmpresaDto>? empresasDto = empresaAppService.GetEnterprisesDto();
-
-            if (empresasDto?.Count > 0)
-            {
-                return Ok(empresasDto.Count);
-            }
-
-            return Ok();
+            int countEnterprises = await empresaAppService.GetCountEnterprisesAsync();
+            return Ok(countEnterprises);
         }
 
         [HttpGet]
-        public ActionResult GetEnterprises()
+        public async Task<IActionResult> GetEnterprises()
         {
-            List<EmpresaDto>? empresasDto = empresaAppService.GetEnterprisesDto();
+            List<EmpresaDto>? empresasDto = await empresaAppService.GetEnterprisesDtoAsync();
             return Ok(empresasDto);
         }
 
         [HttpGet]
-        public ActionResult GetEnterpriseById(string id)
+        public async Task<IActionResult> GetEnterpriseById(string id)
         {
-            EmpresaDto? empresaDto = empresaAppService.GetEnterpriseDto(id);
+            EmpresaDto? empresaDto = await empresaAppService.GetEnterpriseDtoAsync(id);
 
             if (empresaDto == null)
             {
@@ -53,30 +43,29 @@ namespace LabBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult SearchEnterprise([FromQuery] string t)
+        public async Task<IActionResult> SearchEnterprise([FromQuery] string t)
         {
-            List<EmpresaDto> empresasDto = empresaAppService.SearchEnterprisesDto(t);
+            List<EmpresaDto> empresasDto = await empresaAppService.SearchEnterprisesDtoAsync(t);
             return Ok(empresasDto);
         }
 
         [HttpPost]
-        public ActionResult Insert([FromBody] EmpresaDto empresaDto)
+        public async Task<IActionResult> Insert([FromBody] EmpresaDto empresaDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             bool empresaValida = empresaAppService.ValidateEmpresa(empresaDto);
 
-            if (empresaValida == false)
+            if (!empresaValida)
             {
                 return UnprocessableEntity();
             }
 
-            Empresa empresa = empresaAppService.InsertEnterprise(empresaDto);
+            Empresa empresa = await empresaAppService.InsertEnterpriseAsync(empresaDto);
             return Ok(empresa.Id);
-        }
-
-        [HttpPut]
-        public ActionResult Update([FromBody] JObject obj)
-        {
-            return Ok();
         }
     }
 }

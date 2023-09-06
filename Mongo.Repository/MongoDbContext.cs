@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using MongoDB.Driver;
 
 namespace Mongo.Repository
@@ -20,7 +18,6 @@ namespace Mongo.Repository
             this.databaseName = databaseName;
             ConectaBancoDados();
         }
-
 
         public IMongoCollection<T> TakeCollection<T>(string collectionName) where T : MongoEntity => Database.GetCollection<T>(collectionName);
 
@@ -100,14 +97,6 @@ namespace Mongo.Repository
             }
         }
 
-        //private MongoClientSettings ConnectDebugCloud()
-        //{
-        //    MongoClientSettings mongoClientSettings = MongoClientSettings.FromConnectionString("mongodb+srv://" + mongoConfig.User + ":" + mongoConfig.Password + "@cluster0.b20orqn.mongodb.net/" + databaseName + "?authSource=admin&retryWrites=true&w=majority&minPoolSize=0&maxPoolSize=800");
-        //    return mongoClientSettings;
-        //}
-
         private MongoClientSettings Connect() => MongoClientSettings.FromConnectionString("mongodb://db:27017?minPoolSize=0&maxPoolSize=100");
-
-        //private MongoClientSettings ConnectReleaseCloud() => MongoClientSettings.FromConnectionString("mongodb+srv://cluster0.b20orqn.mongodb.net/" + databaseName + "?authSource=admin&retryWrites=true&w=majority&minPoolSize=0&maxPoolSize=800");
     }
 }

@@ -67,6 +67,12 @@ csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
 csharp_style_prefer_not_pattern = true:suggestion
 csharp_style_prefer_extended_property_pattern = true:suggestion
 
+# CS8604: Possível argumento de referência nula.
+dotnet_diagnostic.CS8604.severity = none
+
+# CS8602: Desreferência de uma referência possivelmente nula.
+dotnet_diagnostic.CS8602.severity = none
+
 [*.vb]
 #### Estilos de nomenclatura ####
 
