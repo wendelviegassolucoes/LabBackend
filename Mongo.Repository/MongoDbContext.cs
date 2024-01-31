@@ -6,7 +6,7 @@ namespace Mongo.Repository
     public class MongoDbContext : IMongoDbContext
     {
         private string databaseName;
-        private MongoConfiguration mongoConfig = new MongoConfiguration().Executa();;
+        private MongoConfiguration mongoConfig;
 
         public IMongoClient Cliente  { get; set; }
 
@@ -14,6 +14,7 @@ namespace Mongo.Repository
 
         public MongoDbContext(string databaseName)
         {
+            mongoConfig = new MongoConfiguration().Executa();
             this.databaseName = databaseName;
             ConectaBancoDados();
         }

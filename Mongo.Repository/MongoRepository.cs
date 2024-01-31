@@ -36,7 +36,6 @@ namespace Mongo.Repository
           int returnElements = 0)
         {
             IMongoQueryable<T> source;
-
             if (filterProperties == null & selection == null)
                 source = Collection.AsQueryable();
             else if (filterProperties == null & selection != null)
@@ -60,7 +59,6 @@ namespace Mongo.Repository
           int returnElements = 0)
         {
             IMongoQueryable<T> query;
-
             if (filterProperties == null & selection == null)
                 query = Collection.AsQueryable();
             else if (filterProperties == null & selection != null)
@@ -125,13 +123,15 @@ namespace Mongo.Repository
         }
 
         public void InsertManyArray<TItem>(
-          Expression<Func<T, object>> filterProperties,
+          Expression<Func<T, object>>? filterProperties,
           object? valueFilter,
           Expression<Func<T, IEnumerable<TItem>>>? propriedade_insercao,
           IEnumerable<TItem>? valuesInsert,
           IClientSessionHandle? session = null)
         {
-            FilterDefinition<T> filter = Builders<T>.Filter.Eq(filterProperties!, valueFilter);
+#pragma warning disable CS8620 // O argumento não pode ser usado para o parâmetro devido a diferenças na nulidade dos tipos de referência.
+            FilterDefinition<T> filter = Builders<T>.Filter.Eq(filterProperties, valueFilter);
+#pragma warning restore CS8620 // O argumento não pode ser usado para o parâmetro devido a diferenças na nulidade dos tipos de referência.
             UpdateDefinition<T> update = Builders<T>.Update.PushEach(propriedade_insercao, valuesInsert);
             if (session == null)
                 Collection.UpdateOne(filter, update);
